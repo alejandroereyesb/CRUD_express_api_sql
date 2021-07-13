@@ -2,9 +2,9 @@ const mariadb = require('mariadb');
 const pool = mariadb.createPool({
     host: 'localhost', 
     user: 'root', 
-    password:'Hola1234$',
+    password:'secret',
     connectionLimit: 5,
-    database:'new_schema'
+    database:'demo'
 });
 // titulo, contenido,url,topic
 async function crearTabla(){
@@ -29,7 +29,7 @@ exports.createNews = async (article) => {
     try {
       conn = await pool.getConnection();
 
-      const query = "INSERT INTO News (Titulo,Contenido,URL,Topic,WriterID) VALUES (?,?,?,?,(SELECT ID from new_schema.Writers WHERE Email=?));";
+      const query = "INSERT INTO News (Titulo,Contenido,URL,Topic,WriterID) VALUES (?,?,?,?,(SELECT ID from Writers WHERE Email=?));";
       const datos = [article.titulo,article.contenido,article.url, article.topic,article.email];
       const res = await conn.query(query,datos); // ejecuta query + datos
       console.log(res);
